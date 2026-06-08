@@ -1,0 +1,1929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kumail Rizvi — Builder, Founder, Hacker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0a;
+    --bg2: #111111;
+    --bg3: #161616;
+    --border: #1e1e1e;
+    --border2: #2a2a2a;
+    --green: #00ff88;
+    --green-dim: #00cc6a;
+    --green-glow: rgba(0,255,136,0.08);
+    --amber: #ffb800;
+    --red: #ff4444;
+    --blue: #4da8ff;
+    --text: #e8e8e8;
+    --text2: #888;
+    --text3: #555;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Space Grotesk', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    color: var(--green);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .nav-logo:hover { opacity: 0.8; }
+  .nav-logo span { color: var(--text3); }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text3);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    transition: color 0.2s;
+    cursor: pointer;
+  }
+
+  .nav-links a:hover,
+  .nav-links a.active { color: var(--green); }
+
+  section { padding: 100px 0 60px; max-width: 860px; margin: 0 auto; padding-left: 2rem; padding-right: 2rem; }
+
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    padding-top: 52px;
+    max-width: 860px;
+    margin: 0 auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .terminal-box {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .terminal-titlebar {
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-red { background: #ff5f57; }
+  .dot-yellow { background: #ffbd2e; }
+  .dot-green { background: #28c840; }
+
+  .terminal-label {
+    margin-left: 8px;
+    color: var(--text3);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+
+  /* Global Scrollbars */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+  * { scrollbar-width: thin; scrollbar-color: var(--border2) var(--bg); }
+
+  .terminal-body {
+    padding: 0.625rem 0.75rem 0.625rem 0.875rem;
+    max-height: 420px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    text-align: left;
+    display: block;
+  }
+
+
+  .terminal-line {
+    margin: 0 0 0.75rem 0;
+    padding: 0;
+    width: 100%;
+    text-align: left;
+  }
+  .terminal-line:last-child { margin-bottom: 0; }
+
+  .prompt {
+    color: var(--text3);
+    white-space: pre-wrap;
+    word-break: break-word;
+    text-align: left;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: block;
+  }
+  .prompt .user { color: var(--green); }
+  .prompt .at { color: var(--text3); }
+  .prompt .host { color: var(--blue); }
+  .prompt .path { color: var(--amber); }
+
+  .output {
+    color: var(--text);
+    margin: 0.25rem 0 0;
+    padding: 0;
+    text-align: left;
+    width: 100%;
+    display: block;
+  }
+  .output .key { color: var(--text2); }
+  .output .val { color: var(--green); }
+  .output .dim { color: var(--text3); }
+  .output .dir { color: var(--blue); }
+  .output .success { color: var(--green); }
+
+  .cursor {
+    display: inline-block;
+    width: 8px;
+    height: 14px;
+    background: var(--green);
+    vertical-align: middle;
+    animation: blink 1.1s step-end infinite;
+  }
+
+  .cursor.typing { animation: none; opacity: 1; }
+
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .hero-tagline {
+    margin-top: 3rem;
+    max-width: 700px;
+  }
+
+  .hero-tagline h1 {
+    font-family: var(--sans);
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    font-weight: 600;
+    line-height: 1.15;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+
+  .hero-tagline h1 .accent { color: var(--green); }
+
+  .hero-tagline p {
+    margin-top: 1rem;
+    color: var(--text2);
+    font-family: var(--sans);
+    font-size: 1rem;
+    max-width: 520px;
+    line-height: 1.7;
+  }
+
+  .hero-badges {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .badge {
+    border: 1px solid var(--border2);
+    color: var(--text3);
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 0.06em;
+    background: var(--bg2);
+  }
+
+  .badge.active {
+    border-color: var(--green);
+    color: var(--green);
+    background: var(--green-glow);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .section-header .host-label {
+    color: var(--text3);
+    font-size: 11px;
+  }
+
+  .section-header .path-label {
+    color: var(--amber);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+
+  .section-header .title {
+    font-family: var(--sans);
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-left: 0.25rem;
+  }
+
+  .section-header::after {
+    content: '';
+    flex: 1;
+    min-width: 40px;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .section-intro {
+    color: var(--text2);
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    line-height: 1.65;
+    margin-bottom: 2rem;
+    max-width: 640px;
+  }
+
+  /* PROJECTS */
+  .project-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .project {
+    background: var(--bg2);
+    padding: 1.5rem 1.75rem;
+    transition: background 0.2s;
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  .project:hover { background: var(--bg3); }
+
+  .project::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: transparent;
+    transition: background 0.2s;
+  }
+
+  .project:hover::before { background: var(--green); }
+
+  .project-index {
+    font-size: 11px;
+    color: var(--text3);
+    padding-top: 3px;
+    letter-spacing: 0.08em;
+  }
+
+  .project-index span { color: var(--green); }
+
+  .project-content { min-width: 0; }
+
+  .project-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+  }
+
+  .project-name {
+    font-family: var(--sans);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .project-name a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .project-name a:hover { color: var(--green); }
+
+  .project-year {
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+  }
+
+  .project-desc {
+    color: var(--text2);
+    font-family: var(--sans);
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+  }
+
+  .project-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  /* VENTURES */
+  .venture-grid { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+
+  .venture {
+    background: var(--bg2);
+    padding: 1.5rem 1.75rem;
+    transition: background 0.2s;
+    position: relative;
+  }
+
+  .venture:hover { background: var(--bg3); }
+
+  .venture::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: transparent;
+    transition: background 0.2s;
+  }
+
+  .venture:hover::before { background: var(--green); }
+
+  .venture-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+  }
+
+  .venture-name {
+    font-family: var(--sans);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0.02em;
+  }
+
+  .venture-status {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    padding: 2px 8px;
+    border-radius: 3px;
+    text-transform: uppercase;
+  }
+
+  .status-active { background: var(--green-glow); color: var(--green); border: 1px solid rgba(0,255,136,0.2); }
+  .status-live { background: rgba(77,168,255,0.08); color: var(--blue); border: 1px solid rgba(77,168,255,0.2); }
+
+  .venture-desc {
+    color: var(--text2);
+    font-family: var(--sans);
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+  }
+
+  .venture-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .tag {
+    font-size: 10px;
+    color: var(--text3);
+    border: 1px solid var(--border);
+    padding: 2px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.04em;
+  }
+
+  /* SKILLS */
+  .skill-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .skill-block {
+    background: var(--bg2);
+    padding: 1.25rem 1.5rem;
+    min-height: 120px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .skill-block::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: var(--green);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.3s ease;
+  }
+
+  .skill-block::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 20% 20%, var(--green-glow), transparent 55%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  .skill-block:hover {
+    background: var(--bg3);
+    box-shadow: inset 0 0 0 1px rgba(0,255,136,0.12);
+  }
+
+  .skill-block:hover::before { transform: scaleY(1); }
+  .skill-block:hover::after { opacity: 1; }
+
+  .skill-block.wide {
+    grid-column: span 2;
+  }
+
+  .skill-label {
+    color: var(--text3);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    position: relative;
+    z-index: 1;
+    transition: color 0.25s ease;
+  }
+
+  .skill-block:hover .skill-label { color: var(--green); }
+
+  .skill-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .skill-item {
+    font-size: 12px;
+    color: var(--text2);
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 3px 9px;
+    border-radius: 3px;
+    cursor: default;
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease,
+                transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+  }
+
+  .skill-item:hover {
+    color: var(--green);
+    border-color: rgba(0,255,136,0.45);
+    background: var(--green-glow);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 4px 14px rgba(0,255,136,0.15);
+  }
+
+  /* LOG */
+  .log-entries {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--bg2);
+    padding: 0 1.25rem;
+  }
+
+  .log-entry {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    gap: 1rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--border);
+    align-items: start;
+  }
+
+  .log-entry:last-child { border-bottom: none; }
+
+  .log-type {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    padding: 2px 6px;
+    border-radius: 3px;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+
+  .log-build { color: var(--amber); background: rgba(255,184,0,0.08); border: 1px solid rgba(255,184,0,0.15); }
+  .log-warn { color: var(--red); background: rgba(255,68,68,0.08); border: 1px solid rgba(255,68,68,0.15); }
+
+  .log-date { color: var(--text3); font-size: 11px; white-space: nowrap; margin-top: 3px; }
+
+  .log-msg {
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 0.875rem;
+  }
+
+  .log-msg small { color: var(--text3); font-family: var(--mono); font-size: 11px; display: block; margin-top: 2px; }
+
+  /* CONTACT */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .contact-item {
+    background: var(--bg2);
+    padding: 1.25rem 1.25rem;
+    text-decoration: none;
+    transition: background 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    position: relative;
+    min-height: 108px;
+  }
+
+  .contact-item::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: var(--green);
+    transform: scaleY(0);
+    transition: transform 0.2s;
+  }
+
+  .contact-item:hover {
+    background: var(--bg3);
+    box-shadow: inset 0 0 24px var(--green-glow);
+  }
+
+  .contact-item:hover::before { transform: scaleY(1); }
+
+  .contact-item.email {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    min-height: auto;
+    padding: 1.35rem 1.5rem;
+  }
+
+  .contact-icon {
+    width: 26px;
+    height: 26px;
+    color: var(--text3);
+    flex-shrink: 0;
+    transition: color 0.2s, filter 0.2s;
+  }
+
+  .contact-icon svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .contact-item:hover .contact-icon {
+    color: var(--green);
+    filter: drop-shadow(0 0 6px rgba(0,255,136,0.35));
+  }
+
+  .contact-info { min-width: 0; flex: 1; }
+
+  .contact-platform {
+    color: var(--text3);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+
+  .contact-handle {
+    color: var(--text);
+    font-size: 12px;
+    line-height: 1.4;
+    transition: color 0.2s;
+  }
+
+  .contact-item:hover .contact-handle { color: var(--green); }
+
+  .contact-handle-email {
+    font-size: clamp(0.8rem, 2.5vw, 0.95rem);
+    letter-spacing: 0.01em;
+  }
+
+  .contact-arrow {
+    margin-left: auto;
+    color: var(--text3);
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.2s, color 0.2s;
+    flex-shrink: 0;
+  }
+
+  .contact-item.email:hover .contact-arrow {
+    opacity: 1;
+    color: var(--green);
+  }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text3);
+    font-size: 11px;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .fade-in.visible { opacity: 1; transform: none; }
+
+  /* SETUP */
+  .setup-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .setup-card {
+    background: var(--bg2);
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    transition: background 0.2s;
+    position: relative;
+  }
+
+  .setup-card:hover { background: var(--bg3); }
+
+  .setup-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: transparent;
+    transition: background 0.2s;
+    z-index: 1;
+  }
+
+  .setup-card:hover::before { background: var(--green); }
+
+  .setup-image {
+    aspect-ratio: 16 / 10;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .setup-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .setup-image-placeholder {
+    color: var(--text3);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  .setup-info {
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .setup-name {
+    font-family: var(--sans);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .setup-meta {
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+
+  .setup-desc {
+    padding: 0 1.5rem 1.25rem;
+    color: var(--text2);
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    line-height: 1.5;
+    margin-top: -0.5rem;
+  }
+
+  .setup-card:hover .setup-name { color: var(--green); }
+
+  /* EXPERIENCE */
+  .experience-panel {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    overflow: hidden;
+    min-height: 420px;
+    aspect-ratio: 4 / 3;
+    max-height: 520px;
+    background: var(--bg2);
+  }
+
+  .experience-panel-titlebar {
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .experience-panel-body {
+    display: grid;
+    grid-template-columns: minmax(148px, 168px) 1fr;
+    flex: 1;
+    min-height: 0;
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .experience-sidebar {
+    background: var(--bg2);
+    padding: 0.5rem 0.625rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    font-family: var(--mono);
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  .experience-sidebar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .exp-terminal-prompt {
+    font-size: 10px;
+    line-height: 1.45;
+    margin-bottom: 0.45rem;
+    color: var(--text3);
+    white-space: pre-wrap;
+  }
+
+  .exp-terminal-prompt .user { color: var(--green); }
+  .exp-terminal-prompt .at { color: var(--text3); }
+  .exp-terminal-prompt .host { color: var(--blue); }
+  .exp-terminal-prompt .path { color: var(--amber); }
+  .exp-terminal-prompt .cmd { color: var(--text2); }
+
+  .exp-ls-label {
+    font-size: 9px;
+    color: var(--text3);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.35rem;
+    text-transform: uppercase;
+  }
+
+  .exp-tab {
+    width: 100%;
+    padding: 0.35rem 0.4rem;
+    margin-bottom: 0.15rem;
+    border: none;
+    border-radius: 3px;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    font-family: var(--mono);
+    transition: background 0.15s, box-shadow 0.15s;
+    position: relative;
+  }
+
+  .exp-tab:hover { background: var(--bg3); }
+
+  .exp-tab.active {
+    background: var(--green-glow);
+    box-shadow: inset 2px 0 0 var(--green);
+  }
+
+  .exp-tab-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4rem;
+    line-height: 1.45;
+  }
+
+  .exp-tab-perms {
+    display: none;
+  }
+
+  .exp-tab-dir {
+    font-size: 11px;
+    color: var(--blue);
+    transition: color 0.15s;
+    word-break: break-all;
+  }
+
+  .exp-tab.active .exp-tab-dir { color: var(--green); }
+
+  .exp-tab-period {
+    display: block;
+    font-size: 9px;
+    color: var(--text3);
+    margin-top: 0.1rem;
+    padding-left: 0;
+    letter-spacing: 0.02em;
+    line-height: 1.3;
+  }
+
+  .exp-tab.active .exp-tab-period { color: var(--text2); }
+
+  .exp-sidebar-footer {
+    margin-top: auto;
+    padding-top: 0.5rem;
+    font-size: 9px;
+    color: var(--text3);
+    border-top: 1px solid var(--border);
+    line-height: 1.4;
+    word-break: break-all;
+  }
+
+  .exp-sidebar-footer .success { color: var(--green); }
+
+  .experience-content {
+    background: var(--bg2);
+    padding: 1.35rem 1.75rem;
+    overflow-y: auto;
+    position: relative;
+    min-width: 0;
+  }
+
+  .exp-content-prompt {
+    font-size: 11px;
+    color: var(--text3);
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+    line-height: 1.5;
+  }
+
+  .exp-content-prompt .user { color: var(--green); }
+  .exp-content-prompt .at { color: var(--text3); }
+  .exp-content-prompt .host { color: var(--blue); }
+  .exp-content-prompt .path { color: var(--amber); }
+
+  .exp-pane {
+    display: none;
+    animation: expFade 0.28s ease;
+  }
+
+  .exp-pane.active { display: block; }
+
+  @keyframes expFade {
+    from { opacity: 0; transform: translateX(8px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .exp-role {
+    font-family: var(--sans);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.25rem;
+  }
+
+  .exp-company {
+    color: var(--green);
+    font-size: 13px;
+    margin-bottom: 0.35rem;
+  }
+
+  .exp-meta {
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.06em;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .exp-body {
+    color: var(--text2);
+    font-family: var(--sans);
+    font-size: 0.875rem;
+    line-height: 1.65;
+    margin-bottom: 1.25rem;
+  }
+
+  .exp-highlights {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .exp-highlight {
+    font-size: 12px;
+    color: var(--text2);
+    padding-left: 1rem;
+    position: relative;
+    line-height: 1.55;
+    font-family: var(--sans);
+  }
+
+  .exp-highlight::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: var(--green);
+  }
+
+  .exp-entries {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .exp-entry {
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .exp-entry:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .exp-entry-title {
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+    line-height: 1.4;
+  }
+
+  .exp-entry-date {
+    font-size: 10px;
+    color: var(--amber);
+    letter-spacing: 0.06em;
+    margin-bottom: 0.5rem;
+  }
+
+  .exp-entry-desc {
+    color: var(--text2);
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    line-height: 1.6;
+  }
+
+  /* CERTIFICATIONS */
+  .cert-panel {
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--bg2);
+  }
+
+  .cert-panel-titlebar {
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .cert-panel-body {
+    padding: 0.875rem 1rem 1rem;
+  }
+
+  .cert-terminal-prompt {
+    font-size: 11px;
+    color: var(--text3);
+    margin-bottom: 1rem;
+    font-family: var(--mono);
+    line-height: 1.5;
+  }
+
+  .cert-terminal-prompt .user { color: var(--green); }
+  .cert-terminal-prompt .at { color: var(--text3); }
+  .cert-terminal-prompt .host { color: var(--blue); }
+  .cert-terminal-prompt .path { color: var(--amber); }
+  .cert-terminal-prompt .cmd { color: var(--text2); }
+
+  .cert-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .cert-card {
+    background: var(--bg2);
+    padding: 1.25rem 1.25rem 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    transition: background 0.25s, box-shadow 0.25s;
+    position: relative;
+    overflow: hidden;
+    min-height: 148px;
+  }
+
+  .cert-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 80% 0%, var(--green-glow), transparent 55%);
+    opacity: 0;
+    transition: opacity 0.25s;
+    pointer-events: none;
+  }
+
+  .cert-card:hover {
+    background: var(--bg3);
+    box-shadow: inset 0 0 0 1px rgba(0,255,136,0.12);
+  }
+
+  .cert-card:hover::after { opacity: 1; }
+
+  .cert-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: var(--green);
+    transform: scaleY(0);
+    transition: transform 0.25s;
+  }
+
+  .cert-card:hover::before { transform: scaleY(1); }
+
+  .cert-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cert-id {
+    font-size: 9px;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .cert-status {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green);
+    background: var(--green-glow);
+    border: 1px solid rgba(0,255,136,0.25);
+    padding: 2px 7px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  .cert-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--blue);
+    font-family: var(--sans);
+    font-size: 18px;
+    font-weight: 700;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    transition: border-color 0.2s, color 0.2s, box-shadow 0.2s;
+  }
+
+  .cert-card:hover .cert-icon {
+    border-color: rgba(0,255,136,0.35);
+    color: var(--green);
+    box-shadow: 0 0 16px rgba(0,255,136,0.12);
+  }
+
+  .cert-info {
+    min-width: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cert-name {
+    font-family: var(--sans);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.45;
+    transition: color 0.2s;
+  }
+
+  .cert-card:hover .cert-name { color: var(--green); }
+
+  .cert-issuer {
+    font-size: 10px;
+    color: var(--text3);
+    margin-top: 0.35rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .cert-verify {
+    font-size: 10px;
+    color: var(--text3);
+    font-family: var(--mono);
+    position: relative;
+    z-index: 1;
+    margin-top: auto;
+    padding-top: 0.25rem;
+  }
+
+  .cert-verify span { color: var(--green); }
+
+  @media (max-width: 768px) {
+    .skill-grid { grid-template-columns: repeat(2, 1fr); }
+    .skill-block.wide { grid-column: span 2; }
+    .contact-grid { grid-template-columns: repeat(2, 1fr); }
+    .contact-item.email { grid-column: 1 / -1; }
+    .project { grid-template-columns: 1fr; gap: 0.5rem; }
+    .setup-grid { grid-template-columns: 1fr; }
+    .cert-grid { grid-template-columns: 1fr; }
+    .experience-panel {
+      aspect-ratio: unset;
+      max-height: none;
+    }
+    .experience-panel-body {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto 1fr;
+    }
+    .experience-sidebar {
+      display: flex;
+      max-height: none;
+      overflow-x: auto;
+      overflow-y: hidden;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      gap: 0.5rem;
+      padding-bottom: 0.75rem;
+    }
+    .exp-terminal-prompt,
+    .exp-ls-label,
+    .exp-sidebar-footer { display: none; }
+    .exp-tab {
+      flex: 0 0 auto;
+      min-width: 150px;
+      margin-bottom: 0;
+    }
+  }
+
+  @media (max-width: 640px) {
+    #hero { padding-left: 1.5rem; padding-right: 1.5rem; max-width: 100%; }
+    section { padding-left: 1.5rem; padding-right: 1.5rem; }
+    footer { padding: 1.5rem; }
+    nav { padding: 0 1.5rem; }
+    .nav-links { gap: 1rem; font-size: 11px; }
+    .skill-grid { grid-template-columns: 1fr; }
+    .skill-block.wide { grid-column: span 1; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .contact-item.email { grid-column: 1; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo" id="nav-home"><span>~/</span>kumail</a>
+  <ul class="nav-links">
+    <li><a href="#projects" data-path="/projects">projects</a></li>
+    <li><a href="#experience" data-path="/experience">experience</a></li>
+    <li><a href="#skills" data-path="/skills">skills</a></li>
+    <li><a href="#certifications" data-path="/certifications">certs</a></li>
+    <li><a href="#setup" data-path="/setup">setup</a></li>
+    <li><a href="#log" data-path="/log">log</a></li>
+    <li><a href="#contact" data-path="/contact">contact</a></li>
+    <li><a href="#ventures" data-path="/ventures">ventures</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="terminal-box fade-in" id="terminal">
+    <div class="terminal-titlebar">
+      <div class="dot dot-red"></div>
+      <div class="dot dot-yellow"></div>
+      <div class="dot dot-green"></div>
+      <span class="terminal-label">kumail@self — bash</span>
+    </div>
+    <div class="terminal-body" id="terminal-body">
+      <div class="terminal-line" id="terminal-static"><div class="prompt"><span class="user">kumail</span><span class="at">@</span><span class="host">self</span>&nbsp;<span class="path" id="prompt-path">~</span>&nbsp;<span style="color:var(--green)">$</span>&nbsp;whoami</div><div class="output"><span class="val">Syed Muhammad Kumail Rizvi</span><br><span class="key">role&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="dim">→</span>&nbsp;Builder · Learner · Cyber Security Student<br><span class="key">location</span><span class="dim">→</span>&nbsp;Rawalpindi, Pakistan<br><span class="key">edu&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="dim">→</span>&nbsp;BS Cyber Security · FAST-NUCES Islamabad · Class of 2027</div></div>
+      <div id="terminal-dynamic"></div>
+      <div class="terminal-line" id="active-prompt-line"><div class="prompt" id="active-prompt"><span class="user">kumail</span><span class="at">@</span><span class="host">self</span>&nbsp;<span class="path" id="active-path">~</span>&nbsp;<span style="color:var(--green)">$</span>&nbsp;<span class="cursor" id="terminal-cursor"></span></div></div>
+    </div>
+  </div>
+
+  <div class="hero-tagline fade-in" style="transition-delay:0.15s">
+    <h1>Building real things.<br><span class="accent">Zero sugarcoating.</span></h1>
+    <p>Founder of SURGITE. Cyber security student at FAST-NUCES. Learning, innovating, and experimenting in public from Rawalpindi — documenting every step, including the $0 revenue.</p>
+    <div class="hero-badges">
+      <span class="badge active">SURGITE — live</span>
+      <span class="badge">Class of 2027</span>
+      <span class="badge">NaSCon'25 · 8th CTF</span>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header fade-in">
+    <span class="host-label">kumail@self</span>
+    <span class="path-label">/projects</span>
+    <span class="title">projects</span>
+  </div>
+  <p class="section-intro fade-in">Shipped code, experiments, and things I've actually built — not slide decks.</p>
+
+  <div class="project-grid fade-in">
+    <div class="project">
+      <div class="project-index"><span>01</span></div>
+      <div class="project-content">
+        <div class="project-header">
+          <span class="project-name"><a href="https://surgiteapp.com" target="_blank" rel="noopener">SURGITE</a></span>
+          <span class="project-year">Nov 2025</span>
+        </div>
+        <p class="project-desc">Location-based commuter alarm app. Sleep through the ride — not your stop. MVP shipped with Android APK and waitlist live.</p>
+        <div class="project-tags">
+          <span class="tag">Expo</span>
+          <span class="tag">React Native</span>
+          <span class="tag">Mapbox</span>
+          <span class="tag">Supabase</span>
+          <span class="tag">Android</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-index"><span>02</span></div>
+      <div class="project-content">
+        <div class="project-header">
+          <span class="project-name">pfSense Homelab</span>
+          <span class="project-year">2025 — present</span>
+        </div>
+        <p class="project-desc">Personal network security lab — firewall rules, VLAN segmentation, traffic monitoring, and hands-on network defense practice.</p>
+        <div class="project-tags">
+          <span class="tag">pfSense</span>
+          <span class="tag">Networking</span>
+          <span class="tag">VLANs</span>
+          <span class="tag">Wireshark</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-index"><span>03</span></div>
+      <div class="project-content">
+        <div class="project-header">
+          <span class="project-name">This Portfolio</span>
+          <span class="project-year">2026</span>
+        </div>
+        <p class="project-desc">Terminal-styled personal site with directory navigation. Built from scratch — no frameworks, no templates, no sugarcoating.</p>
+        <div class="project-tags">
+          <span class="tag">HTML</span>
+          <span class="tag">CSS</span>
+          <span class="tag">Vanilla JS</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-header fade-in">
+    <span class="host-label">kumail@self</span>
+    <span class="path-label">/experience</span>
+    <span class="title">experience</span>
+  </div>
+  <p class="section-intro fade-in">Where I've been — most recent first.</p>
+
+  <div class="experience-panel fade-in">
+    <div class="experience-panel-titlebar">
+      <div class="dot dot-red"></div>
+      <div class="dot dot-yellow"></div>
+      <div class="dot dot-green"></div>
+      <span class="terminal-label">kumail@self — /experience</span>
+    </div>
+    <div class="experience-panel-body">
+      <div class="experience-sidebar" role="tablist">
+        <button class="exp-tab active" role="tab" aria-selected="true" data-exp="surgite" data-path="surgite">
+          <div class="exp-tab-line"><span class="exp-tab-perms">drwxr-xr-x</span><span class="exp-tab-dir">surgite/</span></div>
+          <span class="exp-tab-period">Nov 2025 – present</span>
+        </button>
+        <button class="exp-tab" role="tab" aria-selected="false" data-exp="fast" data-path="fast-nuces">
+          <div class="exp-tab-line"><span class="exp-tab-perms">drwxr-xr-x</span><span class="exp-tab-dir">fast-nuces/</span></div>
+          <span class="exp-tab-period">2023 – 2027</span>
+        </button>
+        <div class="exp-sidebar-footer" id="exp-sidebar-status"><span class="success">→</span> cd surgite/</div>
+      </div>
+
+      <div class="experience-content">
+      <div class="exp-pane active" id="exp-surgite" role="tabpanel">
+        <div class="exp-content-prompt"><span class="user">kumail</span><span class="at">@</span><span class="host">self</span>&nbsp;<span class="path">/experience/surgite</span>&nbsp;<span style="color:var(--green)">$</span>&nbsp;cat README.md</div>
+        <div class="exp-role">Founder</div>
+        <div class="exp-company"><a href="https://www.surgiteapp.com" target="_blank" rel="noopener" style="color: inherit; text-decoration: none;">SURGITE</a></div>
+        <div class="exp-meta">Nov 2025 – present · <a href="https://www.surgiteapp.com" target="_blank" rel="noopener" style="color: inherit; text-decoration: underline; text-underline-offset: 2px;">surgiteapp.com</a></div>
+        <p class="exp-body">Location-based commuter alarm app. Sleep through the ride — not your stop. MVP shipped with Android APK live and waitlist open.</p>
+        <div class="exp-highlights">
+          <div class="exp-highlight">Built with Expo, React Native, Mapbox, and Supabase</div>
+          <div class="exp-highlight">End-to-end product: design, development, and deployment</div>
+          <div class="exp-highlight">First mobile product shipped to real users</div>
+        </div>
+      </div>
+
+      <div class="exp-pane" id="exp-fast" role="tabpanel">
+        <div class="exp-content-prompt"><span class="user">kumail</span><span class="at">@</span><span class="host">self</span>&nbsp;<span class="path">/experience/fast-nuces</span>&nbsp;<span style="color:var(--green)">$</span>&nbsp;cat README.md</div>
+        <div class="exp-role">Cyber Security Student</div>
+        <div class="exp-company">FAST-NUCES Islamabad</div>
+        <div class="exp-meta">2023 – 2027 · Class of 2027</div>
+        <p class="exp-body">Pursuing BS Cyber Security. Building in security, design, and competition alongside coursework.</p>
+        <div class="exp-entries">
+          <div class="exp-entry">
+            <div class="exp-entry-title">NaSCon Creative Officer – FAST Islamabad</div>
+            <div class="exp-entry-date">Jan '25 – May '25</div>
+            <p class="exp-entry-desc">Led visual identity design for NaSCon'25; produced event posts, logos, and social media content that measurably elevated the event's brand presence over prior editions.</p>
+          </div>
+          <div class="exp-entry">
+            <div class="exp-entry-title">GDGOC Creative Officer – FAST Islamabad</div>
+            <div class="exp-entry-date">Sep '24 – Sep '25</div>
+            <p class="exp-entry-desc">Designed event branding and promotional materials; coordinated cross-campus design alignment with GDGOC chapters at COMSATS, IST, and other universities.</p>
+          </div>
+          <div class="exp-entry">
+            <div class="exp-entry-title">CTF (Capture The Flag) – NaSCon'25</div>
+            <div class="exp-entry-date">April 2025</div>
+            <p class="exp-entry-desc">Reached the final round and secured 8th position among the 26 finalist teams in NaSCon's national-level cybersecurity CTF competition. Solved practical challenges across cryptography, web exploitation, reverse engineering, and steganography.</p>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header fade-in">
+    <span class="host-label">kumail@self</span>
+    <span class="path-label">/skills</span>
+    <span class="title">skills</span>
+  </div>
+
+  <div class="skill-grid fade-in">
+    <div class="skill-block">
+      <div class="skill-label">languages</div>
+      <div class="skill-items">
+        <span class="skill-item">TypeScript</span>
+        <span class="skill-item">JavaScript</span>
+        <span class="skill-item">Python</span>
+        <span class="skill-item">C</span>
+        <span class="skill-item">C++</span>
+      </div>
+    </div>
+    <div class="skill-block">
+      <div class="skill-label">frontend</div>
+      <div class="skill-items">
+        <span class="skill-item">Next.js 14</span>
+        <span class="skill-item">React Native</span>
+        <span class="skill-item">Expo</span>
+        <span class="skill-item">Tailwind</span>
+        <span class="skill-item">HTML / CSS</span>
+      </div>
+    </div>
+    <div class="skill-block">
+      <div class="skill-label">backend / infra</div>
+      <div class="skill-items">
+        <span class="skill-item">Node.js</span>
+        <span class="skill-item">socket.io</span>
+        <span class="skill-item">Supabase</span>
+        <span class="skill-item">Docker</span>
+        <span class="skill-item">Netlify</span>
+        <span class="skill-item">Firebase</span>
+      </div>
+    </div>
+    <div class="skill-block wide">
+      <div class="skill-label">cybersecurity</div>
+      <div class="skill-items">
+        <span class="skill-item">Kali Linux</span>
+        <span class="skill-item">Nmap</span>
+        <span class="skill-item">Wireshark</span>
+        <span class="skill-item">Autopsy</span>
+        <span class="skill-item">FTK Imager</span>
+        <span class="skill-item">pfSense</span>
+        <span class="skill-item">Networking</span>
+        <span class="skill-item">Network Security</span>
+        <span class="skill-item">Digital Forensics</span>
+      </div>
+    </div>
+    <div class="skill-block">
+      <div class="skill-label">tools</div>
+      <div class="skill-items">
+        <span class="skill-item">Git</span>
+        <span class="skill-item">Linux</span>
+        <span class="skill-item">Bash</span>
+        <span class="skill-item">VS Code</span>
+        <span class="skill-item">Cursor</span>
+        <span class="skill-item">Antigravity</span>
+        <span class="skill-item">Postman</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-header fade-in">
+    <span class="host-label">kumail@self</span>
+    <span class="path-label">/certifications</span>
+    <span class="title">certifications</span>
+  </div>
+
+  <div class="cert-panel fade-in">
+    <div class="cert-panel-titlebar">
+      <div class="dot dot-red"></div>
+      <div class="dot dot-yellow"></div>
+      <div class="dot dot-green"></div>
+      <span class="terminal-label">kumail@self — /certifications</span>
+    </div>
+    <div class="cert-panel-body">
+      <div class="cert-terminal-prompt"><span class="user">kumail</span><span class="at">@</span><span class="host">self</span>&nbsp;<span class="path">/certifications</span>&nbsp;<span style="color:var(--green)">$</span>&nbsp;<span class="cmd">openssl verify *.crt</span></div>
+      <div class="cert-grid">
+        <div class="cert-card">
+          <div class="cert-card-top">
+            <span class="cert-id">cert-001.crt</span>
+            <span class="cert-status">verified</span>
+          </div>
+          <div class="cert-icon">G</div>
+          <div class="cert-info">
+            <div class="cert-name">Google Foundations of Cybersecurity</div>
+            <div class="cert-issuer">Google · Cybersecurity Certificate</div>
+          </div>
+          <div class="cert-verify"><span>OK</span> — signature valid</div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-card-top">
+            <span class="cert-id">cert-002.crt</span>
+            <span class="cert-status">verified</span>
+          </div>
+          <div class="cert-icon">G</div>
+          <div class="cert-info">
+            <div class="cert-name">Google Tools of the Trade: Linux and SQL</div>
+            <div class="cert-issuer">Google · Cybersecurity Certificate</div>
+          </div>
+          <div class="cert-verify"><span>OK</span> — signature valid</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SETUP -->
+<section id="setup">
+  <div class="section-header fade-in">
+    <span class="host-label">kumail@self</span>
+    <span class="path-label">/setup</span>
+    <span class="title">setup</span>
+  </div>
+  <p class="section-intro fade-in">The machines I build on — desktop battlestation and portable rig.</p>
+
+  <div class="setup-grid fade-in">
+    <a href="setup-pc.html" class="setup-card">
+      <div class="setup-image">
+        <!-- <img src="images/pc.jpg" alt="PC setup"> -->
+        <div class="setup-image-placeholder">image coming soon</div>
+      </div>
+      <div class="setup-info">
+        <span class="setup-name">PC Specs</span>
+        <span class="setup-meta">desktop</span>
+      </div>
+      <p class="setup-desc">Ryzen 5 3600 · RX 9060 XT · 32GB RAM · dual display</p>
+    </a>
+
+    <a href="setup-laptop.html" class="setup-card">
+      <div class="setup-image">
+        <!-- <img src="images/laptop.jpg" alt="Laptop setup"> -->
+        <div class="setup-image-placeholder">image coming soon</div>
+      </div>
+      <div class="setup-info">
+        <span class="setup-name">Laptop Specs</span>
+        <span class="setup-meta">portable</span>
+      </div>
+      <p class="setup-desc">ASUS TUF A15 · Ryzen 7 7435HS · RTX 3050 · 16GB DDR5</p>
+    </a>
+  </div>
+</section>
+
+<!-- LOG -->
+<section id="log">
+  <div class="section-header fade-in">
+    <span class="host-label">kumail@self</span>
+    <span class="path-label">/log</span>
+    <span class="title">build log</span>
+  </div>
+
+  <div class="log-entries fade-in">
+    <div class="log-entry">
+      <span class="log-type log-build">BUILD</span>
+      <span class="log-date">Mar 2026</span>
+      <div class="log-msg">SURGITE MVP complete — Expo/React Native, Mapbox, Supabase, subscription model<small>android APK live · waitlist open</small></div>
+    </div>
+    <div class="log-entry">
+      <span class="log-type log-warn">WARN</span>
+      <span class="log-date">ongoing</span>
+      <div class="log-msg">Revenue: $0.00 — building in the open, no sugarcoating</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header fade-in">
+    <span class="host-label">kumail@self</span>
+    <span class="path-label">/contact</span>
+    <span class="title">contact</span>
+  </div>
+
+  <div class="contact-grid fade-in">
+    <a class="contact-item" href="https://instagram.com/itskumailrizvi" target="_blank" rel="noopener" aria-label="Instagram">
+      <div class="contact-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+      </div>
+      <div class="contact-info">
+        <div class="contact-platform">instagram</div>
+        <div class="contact-handle">@itskumailrizvi</div>
+      </div>
+    </a>
+    <a class="contact-item" href="https://x.com/itskumailrizvi" target="_blank" rel="noopener" aria-label="X / Twitter">
+      <div class="contact-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </div>
+      <div class="contact-info">
+        <div class="contact-platform">x / twitter</div>
+        <div class="contact-handle">@itskumailrizvi</div>
+      </div>
+    </a>
+    <a class="contact-item" href="https://github.com/SyedMuhammadKumailRizvi" target="_blank" rel="noopener" aria-label="GitHub">
+      <div class="contact-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.021c0 4.428 2.865 8.184 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.021C22 6.484 17.522 2 12 2z"/></svg>
+      </div>
+      <div class="contact-info">
+        <div class="contact-platform">github</div>
+        <div class="contact-handle">SyedMuhammadKumailRizvi</div>
+      </div>
+    </a>
+    <a class="contact-item" href="https://www.linkedin.com/in/syed-muhammad-kumail-rizvi/" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <div class="contact-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zM7.114 20.452H3.555V9h3.559v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </div>
+      <div class="contact-info">
+        <div class="contact-platform">linkedin</div>
+        <div class="contact-handle">syed-muhammad-kumail-rizvi</div>
+      </div>
+    </a>
+    <a class="contact-item email" href="mailto:syedmuhammadkumailrizvi@gmail.com" aria-label="Email">
+      <div class="contact-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+      </div>
+      <div class="contact-info">
+        <div class="contact-platform">email</div>
+        <div class="contact-handle contact-handle-email">syedmuhammadkumailrizvi@gmail.com</div>
+      </div>
+      <span class="contact-arrow" aria-hidden="true">→</span>
+    </a>
+  </div>
+</section>
+
+<!-- VENTURES -->
+<section id="ventures">
+  <div class="section-header fade-in">
+    <span class="host-label">kumail@self</span>
+    <span class="path-label">/ventures</span>
+    <span class="title">ventures</span>
+  </div>
+  <p class="section-intro fade-in">Learning, innovating, and experimenting — turning ideas into ventures that solve real problems. Building in public, failing forward, shipping anyway.</p>
+
+  <div class="venture-grid fade-in">
+    <div class="venture">
+      <div class="venture-header">
+        <span class="venture-name">SURGITE</span>
+        <span class="venture-status status-live">live · waitlist</span>
+      </div>
+      <p class="venture-desc">Location-based commuter alarm app. Sleep through the ride — not your stop.</p>
+      <div class="venture-tags">
+        <span class="tag">Expo</span>
+        <span class="tag">React Native</span>
+        <span class="tag">Mapbox</span>
+        <span class="tag">Supabase</span>
+        <span class="tag">Android APK</span>
+        <span class="tag">surgiteapp.com</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>Syed Muhammad Kumail Rizvi · rawalpindi, pk</span>
+  <span style="color:var(--green)">learning · innovating · experimenting</span>
+  <span>© 2026 Syed Muhammad Kumail Rizvi</span>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  const terminalBody = document.getElementById('terminal-body');
+  const terminalDynamic = document.getElementById('terminal-dynamic');
+  const activePromptLine = document.getElementById('active-prompt-line');
+  const activePathEl = document.getElementById('active-path');
+  const terminalCursor = document.getElementById('terminal-cursor');
+  const terminalBox = document.getElementById('terminal');
+
+  let currentPath = '~';
+  let isNavigating = false;
+
+  const dirListings = {
+    '/projects': 'surgite/  homelab/  portfolio/',
+    '/experience': 'surgite/  fast-nuces/',
+    '/skills': 'languages/  frontend/  backend/  cybersecurity/  tools/',
+    '/certifications': 'google-cybersecurity/  google-linux-sql/',
+    '/setup': 'pc/  laptop/',
+    '/log': 'build.log  warn.log',
+    '/contact': 'instagram  x  github  linkedin  email',
+    '/ventures': 'surgite/',
+  };
+
+  function buildPrompt(path, command = '') {
+    const displayPath = path === '~' ? '~' : path;
+    return `<span class="user">kumail</span><span class="at">@</span><span class="host">self</span>&nbsp;<span class="path">${displayPath}</span>&nbsp;<span style="color:var(--green)">$</span>&nbsp;${command}`;
+  }
+
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  async function typeText(el, text, speed = 38) {
+    el.classList.add('typing');
+    for (let i = 0; i < text.length; i++) {
+      el.textContent = text.slice(0, i + 1);
+      await sleep(speed);
+    }
+    el.classList.remove('typing');
+  }
+
+  async function runTerminalNav(targetId, path) {
+    if (isNavigating) return;
+    isNavigating = true;
+
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + targetId);
+    });
+
+    terminalBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    await sleep(400);
+
+    const fromPath = currentPath === '~' ? '~' : currentPath;
+    const cmd = `cd ${path}`;
+
+    const cmdLine = document.createElement('div');
+    cmdLine.className = 'terminal-line';
+    const typingEl = document.createElement('span');
+    const promptDiv = document.createElement('div');
+    promptDiv.className = 'prompt';
+    promptDiv.innerHTML = buildPrompt(fromPath);
+    promptDiv.appendChild(typingEl);
+    cmdLine.appendChild(promptDiv);
+    terminalDynamic.appendChild(cmdLine);
+    terminalBody.scrollTop = terminalBody.scrollHeight;
+
+    await typeText(typingEl, cmd);
+
+    await sleep(200);
+
+    currentPath = path;
+    activePathEl.textContent = path;
+
+    const lsLine = document.createElement('div');
+    lsLine.className = 'terminal-line';
+    lsLine.innerHTML = `
+      <div class="prompt">${buildPrompt(path, 'ls')}</div>
+      <div class="output"><span class="dir">${dirListings[path]}</span></div>
+    `;
+    terminalDynamic.appendChild(lsLine);
+    terminalBody.scrollTop = terminalBody.scrollHeight;
+
+    await sleep(350);
+
+    const enterLine = document.createElement('div');
+    enterLine.className = 'terminal-line';
+    enterLine.innerHTML = `<div class="output"><span class="success">→ entering ${path}</span></div>`;
+    terminalDynamic.appendChild(enterLine);
+    terminalBody.scrollTop = terminalBody.scrollHeight;
+
+    await sleep(500);
+
+    const section = document.getElementById(targetId);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    isNavigating = false;
+  }
+
+  document.querySelectorAll('.nav-links a[data-path]').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const path = link.dataset.path;
+      const targetId = link.getAttribute('href').slice(1);
+      runTerminalNav(targetId, path);
+    });
+  });
+
+  if (location.hash) {
+    const hash = location.hash.slice(1);
+    const link = document.querySelector(`.nav-links a[href="#${hash}"]`);
+    if (link && link.dataset.path) {
+      setTimeout(() => runTerminalNav(hash, link.dataset.path), 600);
+    }
+  }
+
+  document.getElementById('nav-home').addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  document.querySelectorAll('.exp-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const id = tab.dataset.exp;
+      const path = tab.dataset.path;
+      document.querySelectorAll('.exp-tab').forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      document.querySelectorAll('.exp-pane').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+      document.getElementById('exp-' + id).classList.add('active');
+      const status = document.getElementById('exp-sidebar-status');
+      if (status && path) {
+        status.innerHTML = `<span class="success">→</span> cd ${path}/`;
+      }
+    });
+  });
+
+  const navSectionIds = ['projects', 'experience', 'skills', 'certifications', 'setup', 'log', 'contact', 'ventures'];
+  const navLinks = document.querySelectorAll('.nav-links a[data-path]');
+
+  function setActiveNavSection(id) {
+    navLinks.forEach(link => {
+      link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+    });
+  }
+
+  const scrollSpyObserver = new IntersectionObserver(entries => {
+    const visible = entries
+      .filter(e => e.isIntersecting)
+      .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+    if (visible.length > 0) {
+      setActiveNavSection(visible[0].target.id);
+    }
+  }, {
+    rootMargin: '-52px 0px -55% 0px',
+    threshold: [0, 0.15, 0.35, 0.55, 0.75, 1]
+  });
+
+  navSectionIds.forEach(id => {
+    const section = document.getElementById(id);
+    if (section) scrollSpyObserver.observe(section);
+  });
+
+  let scrollSpyTicking = false;
+  window.addEventListener('scroll', () => {
+    if (scrollSpyTicking) return;
+    scrollSpyTicking = true;
+    requestAnimationFrame(() => {
+      if (window.scrollY < 280) {
+        navLinks.forEach(link => link.classList.remove('active'));
+      }
+      scrollSpyTicking = false;
+    });
+  }, { passive: true });
+</script>
+</body>
+</html>

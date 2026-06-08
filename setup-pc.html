@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PC Specs — Kumail Rizvi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0a;
+    --bg2: #111111;
+    --bg3: #161616;
+    --border: #1e1e1e;
+    --border2: #2a2a2a;
+    --green: #00ff88;
+    --green-glow: rgba(0,255,136,0.08);
+    --amber: #ffb800;
+    --blue: #4da8ff;
+    --text: #e8e8e8;
+    --text2: #888;
+    --text3: #555;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Space Grotesk', sans-serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2rem;
+    padding-top: 5rem;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text3);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    margin-bottom: 2.5rem;
+    transition: color 0.2s;
+  }
+
+  .back-link:hover { color: var(--green); }
+
+  .back-link .arrow {
+    font-size: 16px;
+    line-height: 1;
+  }
+
+  .page-header {
+    margin-bottom: 2rem;
+  }
+
+  .path-label {
+    color: var(--amber);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.5rem;
+  }
+
+  .page-title {
+    font-family: var(--sans);
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+
+  .page-subtitle {
+    margin-top: 0.5rem;
+    color: var(--text2);
+    font-family: var(--sans);
+    font-size: 0.9rem;
+  }
+
+  .setup-hero-image {
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(135deg, var(--bg2), #151d18);
+    border: 1px solid var(--border2);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+  }
+
+  .setup-hero-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(0, 255, 136, 0.06), transparent 70%);
+    pointer-events: none;
+  }
+
+  .setup-hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .setup-hero-image .placeholder {
+    color: var(--text3);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .spec-sheet {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg2);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .spec-sheet:hover {
+    box-shadow: 0 12px 32px rgba(0, 255, 136, 0.05);
+    border-color: var(--border2);
+  }
+
+  .spec-sheet-header {
+    padding: 1rem 1.5rem;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .spec-group {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .spec-group:last-child { border-bottom: none; }
+
+  .spec-group-title {
+    padding: 0.75rem 1.5rem;
+    font-size: 10px;
+    color: var(--green);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: var(--green-glow);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .spec-row {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    align-items: start;
+    transition: background 0.2s ease, padding-left 0.2s ease;
+    position: relative;
+  }
+
+  .spec-row::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: var(--green);
+    transform: scaleY(0);
+    transition: transform 0.2s ease;
+  }
+
+  .spec-row:hover {
+    background: var(--bg3);
+    padding-left: 1.85rem;
+  }
+
+  .spec-row:hover::before {
+    transform: scaleY(1);
+  }
+
+  .spec-row:last-child { border-bottom: none; }
+
+  .spec-key {
+    color: var(--text3);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    transition: color 0.2s ease;
+  }
+
+  .spec-row:hover .spec-key {
+    color: var(--green);
+  }
+
+  .spec-val {
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 0.875rem;
+    line-height: 1.55;
+  }
+
+  footer {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    color: var(--text3);
+    font-size: 11px;
+    text-align: center;
+  }
+
+  @media (max-width: 640px) {
+    .page { padding: 1.5rem; padding-top: 4.5rem; }
+    .spec-row { grid-template-columns: 1fr; gap: 0.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <a href="index.html#setup" class="back-link">
+    <span class="arrow">←</span>
+    <span>back to /setup</span>
+  </a>
+
+  <header class="page-header">
+    <div class="path-label">kumail@self /setup/pc</div>
+    <h1 class="page-title">PC Specs</h1>
+    <p class="page-subtitle">Current specification sheet — desktop battlestation</p>
+  </header>
+
+  <div class="setup-hero-image">
+    <!-- <img src="images/pc.jpg" alt="PC setup"> -->
+    <span class="placeholder">image coming soon</span>
+  </div>
+
+  <div class="spec-sheet">
+    <div class="spec-sheet-header">Current Specification Sheet</div>
+
+    <div class="spec-group">
+      <div class="spec-group-title">Core Components</div>
+      <div class="spec-row">
+        <span class="spec-key">CPU</span>
+        <span class="spec-val">AMD Ryzen 5 3600 (6 Cores / 12 Threads)</span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-key">GPU</span>
+        <span class="spec-val">XFX Radeon RX 9060 XT 8GB</span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-key">Motherboard</span>
+        <span class="spec-val">ASUS Prime B550-Plus</span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-key">RAM</span>
+        <span class="spec-val">32GB G.Skill Trident Z RGB 3600MHz DDR4</span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-key">Storage</span>
+        <span class="spec-val">256GB Gigabyte SSD + 1TB HDD</span>
+      </div>
+    </div>
+
+    <div class="spec-group">
+      <div class="spec-group-title">Display Setup (Dual Display)</div>
+      <div class="spec-row">
+        <span class="spec-key">Primary</span>
+        <span class="spec-val">MSI MAG 255F X24 — 24.5", 240Hz, Rapid IPS (Horizontal)</span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-key">Secondary</span>
+        <span class="spec-val">HP P22 G4 — 21.5", 75Hz, IPS (Vertical)</span>
+      </div>
+    </div>
+  </div>
+
+  <footer>© 2026 Syed Muhammad Kumail Rizvi</footer>
+</div>
+
+</body>
+</html>
