@@ -270,6 +270,114 @@
     background: var(--green-glow);
   }
 
+  .process-pipeline {
+    margin-top: 2.5rem;
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .process-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    opacity: 0;
+    animation: fadeInNode 0.5s forwards;
+    position: relative;
+    z-index: 2;
+    flex-shrink: 0;
+  }
+
+  .process-node:nth-child(1) { animation-delay: 0.1s; }
+  .process-node:nth-child(3) { animation-delay: 0.7s; }
+  .process-node:nth-child(5) { animation-delay: 1.3s; }
+
+  .node-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--border2);
+    transition: all 0.3s ease;
+  }
+
+  .process-node:nth-child(1) .node-dot {
+    border-color: var(--amber);
+    box-shadow: 0 0 10px rgba(255,184,0,0.2);
+  }
+  
+  .process-node:nth-child(3) .node-dot {
+    border-color: var(--blue);
+    box-shadow: 0 0 10px rgba(77,168,255,0.2);
+  }
+
+  .process-node:nth-child(5) .node-dot {
+    border-color: var(--green);
+    box-shadow: 0 0 10px rgba(0,255,136,0.2);
+    background: var(--green-glow);
+  }
+
+  .node-label {
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: var(--mono);
+  }
+  
+  .process-node:nth-child(1) .node-label { color: var(--amber); }
+  .process-node:nth-child(3) .node-label { color: var(--blue); }
+  .process-node:nth-child(5) .node-label { color: var(--green); }
+
+  .process-line {
+    flex: 1;
+    height: 2px;
+    background: var(--border);
+    margin-top: 5px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .line-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+    animation: fillLine 0.6s forwards ease-in-out;
+  }
+
+  .process-line:nth-child(2) .line-fill { 
+    animation-delay: 0.1s; 
+    background: linear-gradient(90deg, var(--amber), var(--blue)); 
+  }
+  .process-line:nth-child(4) .line-fill { 
+    animation-delay: 0.7s; 
+    background: linear-gradient(90deg, var(--blue), var(--green)); 
+  }
+
+  @keyframes fillLine {
+    to { width: 100%; }
+  }
+
+  @keyframes fadeInNode {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 480px) {
+    .process-pipeline {
+      max-width: 100%;
+      padding-right: 1rem;
+    }
+    .node-label {
+      font-size: 9px;
+      letter-spacing: 0.05em;
+    }
+  }
+
   .section-header {
     display: flex;
     align-items: center;
@@ -1358,12 +1466,13 @@
     </button>
   </div>
   <ul class="nav-links" id="nav-links">
+    <li><a href="#log" data-path="/log">log</a></li>
     <li><a href="#projects" data-path="/projects">projects</a></li>
     <li><a href="#experience" data-path="/experience">experience</a></li>
+    <li><a href="#competitions" data-path="/competitions">competitions</a></li>
     <li><a href="#skills" data-path="/skills">skills</a></li>
     <li><a href="#certifications" data-path="/certifications">certs</a></li>
     <li><a href="#setup" data-path="/setup">setup</a></li>
-    <li><a href="#log" data-path="/log">log</a></li>
     <li><a href="#contact" data-path="/contact">contact</a></li>
     <li><a href="#ventures" data-path="/ventures">ventures</a></li>
   </ul>
@@ -1386,12 +1495,54 @@
   </div>
 
   <div class="hero-tagline fade-in" style="transition-delay:0.15s">
-    <h1>Building real things.<br><span class="accent">Zero sugarcoating.</span></h1>
+    <h1>Building solutions for<br><span class="accent">real problems.</span></h1>
     <p>Founder of SURGITE. Cyber security student at FAST-NUCES. Learning, innovating, and experimenting in public from Rawalpindi — documenting every step.</p>
-    <div class="hero-badges">
-      <span class="badge active">SURGITE — live</span>
-      <span class="badge">Class of 2027</span>
-      <span class="badge">NaSCon'25 · 8th CTF</span>
+    <div class="process-pipeline">
+      <div class="process-node">
+        <div class="node-dot"></div>
+        <span class="node-label">Idea</span>
+      </div>
+      <div class="process-line">
+        <div class="line-fill"></div>
+      </div>
+      <div class="process-node">
+        <div class="node-dot"></div>
+        <span class="node-label">Steps</span>
+      </div>
+      <div class="process-line">
+        <div class="line-fill"></div>
+      </div>
+      <div class="process-node">
+        <div class="node-dot"></div>
+        <span class="node-label">Solution</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOG -->
+<section id="log">
+  <div class="section-header fade-in">
+    <span class="host-label">kumail@self</span>
+    <span class="path-label">/log</span>
+    <span class="title">build log</span>
+  </div>
+
+  <div class="log-entries fade-in">
+    <div class="log-entry">
+      <span class="log-type log-build">BUILD</span>
+      <span class="log-date">July 2026</span>
+      <div class="log-msg">AMD Developer Hackathon: ACT II — built Inzex Forensics Agent<small>125th place out of 484 teams</small></div>
+    </div>
+    <div class="log-entry">
+      <span class="log-type log-build">BUILD</span>
+      <span class="log-date">Mar 2026</span>
+      <div class="log-msg">SURGITE MVP complete — Expo/React Native, Mapbox, Supabase, subscription model<small>android APK live · waitlist open</small></div>
+    </div>
+    <div class="log-entry">
+      <span class="log-type log-warn">WARN</span>
+      <span class="log-date">ongoing</span>
+      <div class="log-msg">Revenue: $0.00 — building in the open, no sugarcoating</div>
     </div>
   </div>
 </section>
@@ -1428,21 +1579,41 @@
       <div class="project-index"><span>02</span></div>
       <div class="project-content">
         <div class="project-header">
-          <span class="project-name">pfSense Homelab</span>
-          <span class="project-year">2025 — present</span>
+          <span class="project-name">Segmented Home Lab with pfSense & Suricata IDS</span>
+          <span class="project-year">2025</span>
         </div>
-        <p class="project-desc">Personal network security lab — firewall rules, VLAN segmentation, traffic monitoring, and hands-on network defense practice.</p>
+        <p class="project-desc">Deployed a virtualised security lab with an internal DMZ on pfSense; enforced stateful firewall policies and configured Suricata IDS with the Emerging Threats ruleset, tuning rules to reduce false positives during scanning and pivoting simulations. Hardened a Linux server with SSH key-only authentication and least-privilege iptables rules; validated configuration with Nmap port-scan baselines.</p>
         <div class="project-tags">
           <span class="tag">pfSense</span>
-          <span class="tag">Networking</span>
-          <span class="tag">VLANs</span>
-          <span class="tag">Wireshark</span>
+          <span class="tag">Suricata IDS</span>
+          <span class="tag">Linux</span>
+          <span class="tag">Nmap</span>
+          <span class="tag">iptables</span>
+          <span class="tag">SSH</span>
         </div>
       </div>
     </div>
 
     <div class="project">
       <div class="project-index"><span>03</span></div>
+      <div class="project-content">
+        <div class="project-header">
+          <span class="project-name">Enterprise Network Simulation – Cisco Packet Tracer</span>
+          <span class="project-year">2024</span>
+        </div>
+        <p class="project-desc">Simulated a multi-subnet enterprise network with DHCP, DNS, NAT, ACLs, a mail server, and dynamic routing protocols (RIP, OSPF). Performed VLAN design and subnetting calculations; configured inter-VLAN routing and verified end-to-end connectivity across all network segments.</p>
+        <div class="project-tags">
+          <span class="tag">Cisco Packet Tracer</span>
+          <span class="tag">Networking</span>
+          <span class="tag">VLANs</span>
+          <span class="tag">ACLs</span>
+          <span class="tag">OSPF</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-index"><span>04</span></div>
       <div class="project-content">
         <div class="project-header">
           <span class="project-name">This Portfolio</span>
@@ -1519,13 +1690,52 @@
             <div class="exp-entry-date">Sep '24 – Sep '25</div>
             <p class="exp-entry-desc">Designed event branding and promotional materials; coordinated cross-campus design alignment with GDGOC chapters at COMSATS, IST, and other universities.</p>
           </div>
-          <div class="exp-entry">
-            <div class="exp-entry-title">CTF (Capture The Flag) – NaSCon'25</div>
-            <div class="exp-entry-date">April 2025</div>
-            <p class="exp-entry-desc">Reached the final round and secured 8th position among the 26 finalist teams in NaSCon's national-level cybersecurity CTF competition. Solved practical challenges across cryptography, web exploitation, reverse engineering, and steganography.</p>
-          </div>
         </div>
       </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPETITIONS -->
+<section id="competitions">
+  <div class="section-header fade-in">
+    <span class="host-label">kumail@self</span>
+    <span class="path-label">/competitions</span>
+    <span class="title">competitions</span>
+  </div>
+  <p class="section-intro fade-in">Hackathons, CTFs, and competitive building.</p>
+
+  <div class="project-grid fade-in">
+    <div class="project">
+      <div class="project-index"><span>01</span></div>
+      <div class="project-content">
+        <div class="project-header">
+          <span class="project-name"><a href="https://lablab.ai/ai-hackathons/amd-developer-hackathon-act-ii/live?track=3" target="_blank" rel="noopener">AMD Developer Hackathon: ACT II</a></span>
+          <span class="project-year">July 2026</span>
+        </div>
+        <p class="project-desc">Participated as a solo member. Secured 125th position in the Unicorn Track out of 484 teams globally. Built <a href="https://github.com/SyedMuhammadKumailRizvi/inzex-forensics-agent" target="_blank" rel="noopener" style="color:var(--green); text-decoration:none; font-weight: 500;">Inzex Forensics Agent</a>.</p>
+        <div class="project-tags">
+          <span class="tag">AI</span>
+          <span class="tag">Hackathon</span>
+          <span class="tag">Solo</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-index"><span>02</span></div>
+      <div class="project-content">
+        <div class="project-header">
+          <span class="project-name">CTF (Capture The Flag) – NaSCon'25</span>
+          <span class="project-year">April 2025</span>
+        </div>
+        <p class="project-desc">Reached the final round and secured 8th position among the 26 finalist teams in NaSCon's national-level cybersecurity CTF competition. Solved practical challenges across cryptography, web exploitation, reverse engineering, and steganography.</p>
+        <div class="project-tags">
+          <span class="tag">Cybersecurity</span>
+          <span class="tag">CTF</span>
+          <span class="tag">NaSCon'25</span>
+        </div>
       </div>
     </div>
   </div>
@@ -1683,28 +1893,6 @@
   </div>
 </section>
 
-<!-- LOG -->
-<section id="log">
-  <div class="section-header fade-in">
-    <span class="host-label">kumail@self</span>
-    <span class="path-label">/log</span>
-    <span class="title">build log</span>
-  </div>
-
-  <div class="log-entries fade-in">
-    <div class="log-entry">
-      <span class="log-type log-build">BUILD</span>
-      <span class="log-date">Mar 2026</span>
-      <div class="log-msg">SURGITE MVP complete — Expo/React Native, Mapbox, Supabase, subscription model<small>android APK live · waitlist open</small></div>
-    </div>
-    <div class="log-entry">
-      <span class="log-type log-warn">WARN</span>
-      <span class="log-date">ongoing</span>
-      <div class="log-msg">Revenue: $0.00 — building in the open, no sugarcoating</div>
-    </div>
-  </div>
-</section>
-
 <!-- CONTACT -->
 <section id="contact">
   <div class="section-header fade-in">
@@ -1816,6 +2004,7 @@
   const dirListings = {
     '/projects': 'surgite/  homelab/  portfolio/',
     '/experience': 'surgite/  fast-nuces/',
+    '/competitions': 'amd-hackathon/  nascon-ctf/',
     '/skills': 'languages/  frontend/  backend/  cybersecurity/  tools/',
     '/certifications': 'google-cybersecurity/  google-linux-sql/',
     '/setup': 'pc/  laptop/',
@@ -1963,7 +2152,7 @@
     });
   });
 
-  const navSectionIds = ['projects', 'experience', 'skills', 'certifications', 'setup', 'log', 'contact', 'ventures'];
+  const navSectionIds = ['log', 'projects', 'experience', 'competitions', 'skills', 'certifications', 'setup', 'contact', 'ventures'];
   const navLinks = document.querySelectorAll('.nav-links a[data-path]');
 
   function setActiveNavSection(id) {
